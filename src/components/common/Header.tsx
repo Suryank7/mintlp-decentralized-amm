@@ -1,46 +1,87 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import routes from "../../routes";
+import { Link, useLocation } from 'react-router-dom';
+import { useAMM } from '@/contexts/AMMContext';
+import { Button } from '@/components/ui/button';
+import { Wallet, Menu } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useState } from 'react';
 
-const Header: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const Header = () => {
   const location = useLocation();
-  const navigation = routes.filter((route) => route.visible !== false);
+  const { isWalletConnected, connectWallet, disconnectWallet } = useAMM();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navigation = [
+    { name: 'Home', path: '/' },
+    { name: 'Swap', path: '/swap' },
+    { name: 'Pools', path: '/pools' },
+    { name: 'Liquidity', path: '/liquidity' },
+    { name: 'Positions', path: '/positions' },
+  ];
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-10">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
-              {/* Please replace with your website logo */}
-              <img
-                className="h-8 w-auto"
-                src={`https://miaoda-site-img.cdn.bcebos.com/placeholder/code_logo_default.png`}
-                alt="Website logo"
-              />
-              {/* Please replace with your website name */}
-              <span className="ml-2 text-xl font-bold text-blue-600">
-                Website Name
-              </span>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <nav className="container mx-auto px-4">
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center gap-8">
+            <Link to="/" className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">A</span>
+              </div>
+              <span className="text-xl font-bold gradient-text">AMM Protocol</span>
             </Link>
+
+            <div className="hidden md:flex items-center gap-1">
+              {navigation.map(item => (
+                <Link key={item.path} to={item.path}>
+                  <Button
+                    variant={location.pathname === item.path ? 'default' : 'ghost'}
+                    className="transition-smooth"
+                  >
+                    {item.name}
+                  </Button>
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* When there's only one page, you can remove the entire navigation section */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`px-3 py-2 text-base font-medium rounded-md ${
-                  location.pathname === item.path
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-                } transition duration-300`}
-              >
-                {item.name}
-              </Link>
-            ))}
+          <div className="flex items-center gap-4">
+            {isWalletConnected ? (
+              <Button variant="outline" onClick={disconnectWallet}>
+                <Wallet className="w-4 h-4 mr-2" />
+                Disconnect
+              </Button>
+            ) : (
+              <Button onClick={connectWallet}>
+                <Wallet className="w-4 h-4 mr-2" />
+                Connect Wallet
+              </Button>
+            )}
+
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild className="md:hidden">
+                <Button variant="ghost" size="icon">
+                  <Menu className="w-5 h-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right">
+                <div className="flex flex-col gap-4 mt-8">
+                  {navigation.map(item => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Button
+                        variant={location.pathname === item.path ? 'default' : 'ghost'}
+                        className="w-full justify-start"
+                      >
+                        {item.name}
+                      </Button>
+                    </Link>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </nav>

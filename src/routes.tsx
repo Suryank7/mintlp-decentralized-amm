@@ -1,4 +1,8 @@
-import SamplePage from './pages/SamplePage';
+import HomePage from './pages/HomePage';
+import SwapPage from './pages/SwapPage';
+import PoolsPage from './pages/PoolsPage';
+import LiquidityPage from './pages/LiquidityPage';
+import PositionsPage from './pages/PositionsPage';
 import type { ReactNode } from 'react';
 
 interface RouteConfig {
@@ -10,10 +14,30 @@ interface RouteConfig {
 
 const routes: RouteConfig[] = [
   {
-    name: 'Sample Page',
+    name: 'Home',
     path: '/',
-    element: <SamplePage />
-  }
+    element: <HomePage />,
+  },
+  {
+    name: 'Swap',
+    path: '/swap',
+    element: <SwapPage />,
+  },
+  {
+    name: 'Pools',
+    path: '/pools',
+    element: <PoolsPage />,
+  },
+  {
+    name: 'Liquidity',
+    path: '/liquidity',
+    element: <LiquidityPage />,
+  },
+  {
+    name: 'Positions',
+    path: '/positions',
+    element: <PositionsPage />,
+  },
 ];
 
 export default routes;
