@@ -29,17 +29,27 @@ export default function HomePage() {
         <section className="text-center space-y-6 py-12 relative">
           <div className="absolute inset-0 bg-gradient-neon opacity-10 blur-3xl"></div>
           <h1 className="text-5xl md:text-6xl font-bold gradient-neon-text relative z-10">
-            NEON AMM PROTOCOL
+            MintLP PROTOCOL
           </h1>
           <p className="text-xl text-primary max-w-2xl mx-auto relative z-10">
-            Trade, provide liquidity, and earn fees with NFT-based LP positions on SUI blockchain
+            Trade, provide liquidity, and earn fees with NFT-based LP positions
+            on SUI blockchain
           </p>
           <div className="flex gap-4 justify-center relative z-10">
-            <Button size="lg" onClick={() => navigate('/swap')} className="neon-glow-cyan hover:neon-glow-purple transition-smooth">
+            <Button
+              size="lg"
+              onClick={() => navigate("/swap")}
+              className="neon-glow-cyan hover:neon-glow-purple transition-smooth"
+            >
               Start Trading
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/liquidity')} className="neon-border hover:neon-glow-magenta transition-smooth">
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => navigate("/liquidity")}
+              className="neon-border hover:neon-glow-magenta transition-smooth"
+            >
               Add Liquidity
             </Button>
           </div>
@@ -53,8 +63,12 @@ export default function HomePage() {
                   <TrendingUp className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <div className="text-sm text-muted-foreground">Total Value Locked</div>
-                  <div className="text-2xl font-bold text-primary">{formatNumber(statistics.totalValueLocked)}</div>
+                  <div className="text-sm text-muted-foreground">
+                    Total Value Locked
+                  </div>
+                  <div className="text-2xl font-bold text-primary">
+                    {formatNumber(statistics.totalValueLocked)}
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -67,8 +81,12 @@ export default function HomePage() {
                   <Coins className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
-                  <div className="text-sm text-muted-foreground">24h Volume</div>
-                  <div className="text-2xl font-bold text-secondary">{formatNumber(statistics.volume24h)}</div>
+                  <div className="text-sm text-muted-foreground">
+                    24h Volume
+                  </div>
+                  <div className="text-2xl font-bold text-secondary">
+                    {formatNumber(statistics.volume24h)}
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -82,7 +100,9 @@ export default function HomePage() {
                 </div>
                 <div>
                   <div className="text-sm text-muted-foreground">24h Fees</div>
-                  <div className="text-2xl font-bold text-success">{formatNumber(statistics.fees24h)}</div>
+                  <div className="text-2xl font-bold text-success">
+                    {formatNumber(statistics.fees24h)}
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -95,8 +115,12 @@ export default function HomePage() {
                   <Zap className="w-6 h-6 text-warning" />
                 </div>
                 <div>
-                  <div className="text-sm text-muted-foreground">24h Transactions</div>
-                  <div className="text-2xl font-bold text-warning">{statistics.transactions24h}</div>
+                  <div className="text-sm text-muted-foreground">
+                    24h Transactions
+                  </div>
+                  <div className="text-2xl font-bold text-warning">
+                    {statistics.transactions24h}
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -107,16 +131,18 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-3xl font-bold">Top Pools</h2>
-              <p className="text-muted-foreground">Highest TVL liquidity pools</p>
+              <p className="text-muted-foreground">
+                Highest TVL liquidity pools
+              </p>
             </div>
-            <Button variant="outline" onClick={() => navigate('/pools')}>
+            <Button variant="outline" onClick={() => navigate("/pools")}>
               View All Pools
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {topPools.map(pool => (
+            {topPools.map((pool) => (
               <PoolCard key={pool.id} pool={pool} />
             ))}
           </div>
@@ -129,9 +155,12 @@ export default function HomePage() {
                 <Coins className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-2 text-primary">NFT-Based Positions</h3>
+                <h3 className="text-xl font-bold mb-2 text-primary">
+                  NFT-Based Positions
+                </h3>
                 <p className="text-muted-foreground">
-                  Your liquidity positions are represented as NFTs with full metadata and transferable ownership
+                  Your liquidity positions are represented as NFTs with full
+                  metadata and transferable ownership
                 </p>
               </div>
             </CardContent>
@@ -143,9 +172,12 @@ export default function HomePage() {
                 <Shield className="w-8 h-8 text-secondary" />
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-2 text-secondary">Slippage Protection</h3>
+                <h3 className="text-xl font-bold mb-2 text-secondary">
+                  Slippage Protection
+                </h3>
                 <p className="text-muted-foreground">
-                  Advanced slippage protection ensures you get the best possible rates with transparent price impact
+                  Advanced slippage protection ensures you get the best possible
+                  rates with transparent price impact
                 </p>
               </div>
             </CardContent>
@@ -157,9 +189,12 @@ export default function HomePage() {
                 <TrendingUp className="w-8 h-8 text-success" />
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-2 text-success">Earn Trading Fees</h3>
+                <h3 className="text-xl font-bold mb-2 text-success">
+                  Earn Trading Fees
+                </h3>
                 <p className="text-muted-foreground">
-                  Provide liquidity and earn a share of trading fees proportional to your pool contribution
+                  Provide liquidity and earn a share of trading fees
+                  proportional to your pool contribution
                 </p>
               </div>
             </CardContent>

@@ -24,5 +24,5 @@ rule:
                     kind: string
                     regex: '^""$'
 
-message: "检测到 SelectItem 组件使用空字符串 value: $MATCH， 这是错误用法， 运行时会报错， 请修改， 如果想实现全选，建议使用all代替空字符串"
+message: "Detected SelectItem component using an empty string as value: $MATCH. This is incorrect usage and will cause a runtime error. Please fix it. If you want to implement 'select all', use 'all' instead of an empty string."
 severity: error

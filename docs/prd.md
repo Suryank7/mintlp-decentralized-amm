@@ -3,7 +3,7 @@
 ## 1. Project Overview
 
 ### 1.1 Problem Statement
-Build a capital-efficient Automated Market Maker (AMM) on SUI blockchain that supports:
+Build a capital-efficient Automated Market Maker (AMM) on the SUI blockchain that supports:
 - NFT-based liquidity provider (LP) positions
 - Constant-product formula (x * y = k)
 - Transparent fee accrual mechanism
@@ -13,7 +13,8 @@ Build a capital-efficient Automated Market Maker (AMM) on SUI blockchain that su
 ### 1.2 Project Objectives
 - Implement an AMM using the constant-product formula
 - Create NFT-based LP positions with full metadata
-- Provide transparent, automated fee distribution\n- Enable efficient swap execution with slippage protection
+- Provide transparent, automated fee distribution
+- Enable efficient swap execution with slippage protection
 - Implement StableSwap variant for stable-asset pools
 
 ## 2. Technical Architecture
@@ -30,8 +31,10 @@ Build a capital-efficient Automated Market Maker (AMM) on SUI blockchain that su
 #### 2.1.2 LiquidityPool Contract
 Core AMM logic implementation:
 - Constant-product formula: x * y = k
-- Swap execution with fee collection\n- Liquidity addition and removal
-- Reserve tracking and updates\n
+- Swap execution with fee collection
+- Liquidity addition and removal
+- Reserve tracking and updates
+
 #### 2.1.3 LPPosition NFT Contract
 NFT representing LP positions:
 - Mint when liquidity is added
@@ -46,7 +49,7 @@ Optimized for similar-priced assets:
 - Amplification coefficient
 - Lower slippage curve
 - Efficient stable-to-stable swaps
-- Uses same NFT system
+- Uses the same NFT system
 
 #### 2.1.5 FeeDistributor Contract
 Fee management logic:
@@ -57,8 +60,10 @@ Fee management logic:
 - Optional auto-compounding
 
 #### 2.1.6 SlippageProtection Contract
-Slippage management:\n- Real-time slippage calculation
-- Deadline enforcement\n- Price limit order support
+Slippage management:
+- Real-time slippage calculation
+- Deadline enforcement
+- Price limit order support
 
 ## 3. Functional Requirements
 
@@ -68,7 +73,7 @@ Slippage management:\n- Real-time slippage calculation
 - Swap tokens with predictable slippage
 - View real-time exchange rates
 - See price impact before swap
-- Execute swaps at best rates
+- Execute swaps at the best rates
 - Set slippage tolerance
 - View swap history and statistics
 
@@ -110,7 +115,8 @@ Slippage management:\n- Real-time slippage calculation
 2. System calculates ratio: amount_b = (amount_a * reserve_b) / reserve_a
 3. LP supplies both tokens
 4. Validate ratio within ±0.5%
-5. Compute minted LP tokens: lp_tokens = (amount_a * total_supply) / reserve_a\n6. Mint LP tokens and update NFT position
+5. Compute minted LP tokens: lp_tokens = (amount_a * total_supply) / reserve_a
+6. Mint LP tokens and update NFT position
 7. Update pool reserves
 8. Emit LiquidityAdded event
 
@@ -118,7 +124,8 @@ Slippage management:\n- Real-time slippage calculation
 1. User sets input token, amount, and minimum output
 2. Compute expected output via AMM formula
 3. Apply fee (e.g., 0.3%)
-4. Enforce slippage check\n5. Transfer input tokens to pool
+4. Enforce slippage check
+5. Transfer input tokens to pool
 6. Calculate output: (input_with_fee * reserve_out) / (reserve_in + input_with_fee)
 7. Transfer output tokens to user
 8. Update reserves keeping K constant
@@ -132,10 +139,12 @@ Slippage management:\n- Real-time slippage calculation
 4. Calculate claimable fees = accumulated_fees * LP_share
 5. Transfer fees to LP
 6. Update NFT metadata
-7. Emit FeeClaimed event\n
+7. Emit FeeClaimed event
+
 #### 3.2.5 Remove Liquidity Workflow
 1. LP specifies LP tokens to burn
-2. System calculates:\n   - amount_a = (lp_tokens * reserve_a) / total_supply
+2. System calculates:
+   - amount_a = (lp_tokens * reserve_a) / total_supply
    - amount_b = (lp_tokens * reserve_b) / total_supply
 3. Validate minimum slippage
 4. Transfer tokens to LP
@@ -146,8 +155,9 @@ Slippage management:\n- Real-time slippage calculation
 ## 4. Testing Requirements
 
 ### 4.1 Unit Tests
-\n#### AMM Math Testing
-- x * y = k verification
+
+#### AMM Math Testing
+- Verify x * y = k
 - Output amount formula
 - Price impact calculation
 - Fee calculation accuracy
@@ -166,13 +176,16 @@ Slippage management:\n- Real-time slippage calculation
 - Price impact limits
 
 ### 4.2 Integration Tests
-\n#### End-to-End Flows
+
+#### End-to-End Flows
 - Complete flow: Create pool → Add liquidity → Swap → Claim fees → Remove liquidity
 - Multiple LPs scenarios
 - Concurrent swaps handling
-\n#### Capital Efficiency Checks
-- K constant stability verification
-- Fee accumulation accuracy\n- LP value tracking
+
+#### Capital Efficiency Checks
+- Verify K constant stability
+- Fee accumulation accuracy
+- LP value tracking
 - Impermanent loss scenarios
 
 ### 4.3 Test Coverage
@@ -180,7 +193,8 @@ Slippage management:\n- Real-time slippage calculation
 - AMM math verification
 - Integration scenarios
 - Gas usage benchmarking
-- Simulation tests\n- Security checklist validation
+- Simulation tests
+- Security checklist validation
 
 ## 5. Deliverables
 
@@ -190,37 +204,45 @@ Slippage management:\n- Real-time slippage calculation
 - StableSwapPool contract
 - LPPositionNFT contract
 - FeeDistributor contract
-- SlippageProtection contract\n
+- SlippageProtection contract
+
 ### 5.2 Testing Suite
-- Full test suite with >80% coverage
+- Full test suite with over 80% coverage
 - AMM math verification tests
 - Integration scenario tests
 - Gas usage benchmarks
 - Simulation tests
-- Security checklist\n
+- Security checklist
+
 ### 5.3 Demo Components
-- Sample pools with tokens\n- Swap interface (CLI or Web)
-- LP position viewer\n- NFT metadata display
+- Sample pools with tokens
+- Swap interface (CLI or Web)
+- LP position viewer
+- NFT metadata display
 - Video walkthrough script
 - Testnet deployment guide
-\n## 6. Evaluation Criteria
+
+## 6. Evaluation Criteria
 
 ### 6.1 Mathematical Correctness (25%)
-- Accurate implementation of constant-product formula
+- Implementation of constant-product formula
 - Correct fee calculations
 - Precise slippage computations
-\n### 6.2 LP NFT Innovation (25%)
+
+### 6.2 LP NFT Innovation (25%)
 - NFT metadata completeness
 - Real-time value tracking
 - Dynamic metadata updates
-\n### 6.3 Slippage Management (20%)\n- Effective slippage protection
+
+### 6.3 Slippage Management (20%)
+- Effective slippage protection
 - Deadline enforcement
 - Price impact accuracy
 
 ### 6.4 Capital Efficiency (15%)
 - K constant maintenance
 - Fee distribution efficiency
-- Optimal liquidity utilization
+- Optimal liquidity use
 
 ### 6.5 Code Quality (15%)
 - Clean code structure
