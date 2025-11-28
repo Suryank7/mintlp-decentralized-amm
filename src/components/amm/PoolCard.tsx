@@ -31,7 +31,7 @@ export function PoolCard({ pool }: PoolCardProps) {
   };
 
   return (
-    <Card className="shadow-card hover:shadow-glow transition-smooth cursor-pointer" onClick={() => navigate(`/pools/${pool.id}`)}>
+    <Card className="shadow-card hover:shadow-glow transition-smooth cursor-pointer neon-border hover:neon-glow-cyan" onClick={() => navigate(`/pools/${pool.id}`)}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
@@ -39,21 +39,21 @@ export function PoolCard({ pool }: PoolCardProps) {
               <img
                 src={pool.tokenA.logoUrl}
                 alt={pool.tokenA.symbol}
-                className="w-8 h-8 rounded-full border-2 border-background"
+                className="w-8 h-8 rounded-full border-2 border-primary neon-glow-cyan"
               />
               <img
                 src={pool.tokenB.logoUrl}
                 alt={pool.tokenB.symbol}
-                className="w-8 h-8 rounded-full border-2 border-background"
+                className="w-8 h-8 rounded-full border-2 border-secondary neon-glow-magenta"
               />
             </div>
-            <span className="font-bold">
+            <span className="font-bold gradient-text">
               {pool.tokenA.symbol}/{pool.tokenB.symbol}
             </span>
           </CardTitle>
           <div className="flex gap-2">
-            <Badge variant="secondary">{getFeeTierLabel(pool.feeTier)}</Badge>
-            <Badge variant="outline">{getPoolTypeLabel(pool.poolType)}</Badge>
+            <Badge variant="secondary" className="neon-border-secondary">{getFeeTierLabel(pool.feeTier)}</Badge>
+            <Badge variant="outline" className="neon-border">{getPoolTypeLabel(pool.poolType)}</Badge>
           </div>
         </div>
       </CardHeader>
@@ -64,14 +64,14 @@ export function PoolCard({ pool }: PoolCardProps) {
               <DollarSign className="w-3 h-3" />
               <span>TVL</span>
             </div>
-            <div className="text-lg font-semibold">{formatNumber(pool.tvl)}</div>
+            <div className="text-lg font-semibold text-primary">{formatNumber(pool.tvl)}</div>
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <Droplet className="w-3 h-3" />
               <span>Volume 24h</span>
             </div>
-            <div className="text-lg font-semibold">{formatNumber(pool.volume24h)}</div>
+            <div className="text-lg font-semibold text-secondary">{formatNumber(pool.volume24h)}</div>
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -84,7 +84,7 @@ export function PoolCard({ pool }: PoolCardProps) {
         <div className="flex gap-2">
           <Button
             variant="default"
-            className="flex-1"
+            className="flex-1 neon-glow-cyan hover:neon-glow-purple transition-smooth"
             onClick={(e) => {
               e.stopPropagation();
               navigate(`/liquidity?pool=${pool.id}`);
@@ -94,7 +94,7 @@ export function PoolCard({ pool }: PoolCardProps) {
           </Button>
           <Button
             variant="outline"
-            className="flex-1"
+            className="flex-1 neon-border hover:neon-glow-magenta transition-smooth"
             onClick={(e) => {
               e.stopPropagation();
               navigate(`/swap?from=${pool.tokenA.id}&to=${pool.tokenB.id}`);

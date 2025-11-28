@@ -33,6 +33,7 @@ export class PoolService {
       feeTier,
       poolType,
       volume24h: '0',
+      volume7d: '0',
       fees24h: '0',
       tvl: this.calculateTVL(amountA, amountB, tokenA.priceUSD || 0, tokenB.priceUSD || 0),
       apr: 0,

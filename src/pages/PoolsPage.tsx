@@ -45,24 +45,24 @@ export default function PoolsPage() {
     <div className="container mx-auto py-8 px-4">
       <div className="space-y-6">
         <div>
-          <h1 className="text-4xl font-bold gradient-text mb-2">Liquidity Pools</h1>
+          <h1 className="text-4xl font-bold gradient-neon-text mb-2">Liquidity Pools</h1>
           <p className="text-muted-foreground">
             Provide liquidity to earn trading fees and receive NFT-based LP positions
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="card-gradient rounded-lg border p-6">
+          <div className="card-gradient rounded-lg border p-6 neon-border hover:neon-glow-cyan transition-smooth">
             <div className="text-sm text-muted-foreground mb-1">Total Value Locked</div>
-            <div className="text-3xl font-bold">{formatNumber(statistics.totalValueLocked)}</div>
+            <div className="text-3xl font-bold text-primary">{formatNumber(statistics.totalValueLocked)}</div>
           </div>
-          <div className="card-gradient rounded-lg border p-6">
+          <div className="card-gradient rounded-lg border p-6 neon-border-secondary hover:neon-glow-magenta transition-smooth">
             <div className="text-sm text-muted-foreground mb-1">24h Volume</div>
-            <div className="text-3xl font-bold">{formatNumber(statistics.volume24h)}</div>
+            <div className="text-3xl font-bold text-secondary">{formatNumber(statistics.volume24h)}</div>
           </div>
-          <div className="card-gradient rounded-lg border p-6">
+          <div className="card-gradient rounded-lg border p-6 neon-border hover:neon-glow-green transition-smooth">
             <div className="text-sm text-muted-foreground mb-1">24h Fees</div>
-            <div className="text-3xl font-bold">{formatNumber(statistics.fees24h)}</div>
+            <div className="text-3xl font-bold text-success">{formatNumber(statistics.fees24h)}</div>
           </div>
         </div>
 
@@ -73,12 +73,12 @@ export default function PoolsPage() {
               placeholder="Search pools..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-10 neon-border"
             />
           </div>
 
           <Tabs value={sortBy} onValueChange={(value) => setSortBy(value as 'tvl' | 'apr' | 'volume')}>
-            <TabsList>
+            <TabsList className="neon-border">
               <TabsTrigger value="tvl">TVL</TabsTrigger>
               <TabsTrigger value="apr">APR</TabsTrigger>
               <TabsTrigger value="volume">Volume</TabsTrigger>

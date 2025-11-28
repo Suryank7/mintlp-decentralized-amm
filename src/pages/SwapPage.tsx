@@ -104,10 +104,10 @@ export default function SwapPage() {
 
   return (
     <div className="container max-w-2xl mx-auto py-8 px-4">
-      <Card className="shadow-card">
+      <Card className="shadow-card neon-border">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl font-bold">Swap</CardTitle>
+            <CardTitle className="text-2xl font-bold gradient-neon-text">Swap Tokens</CardTitle>
             <SlippageSettings
               settings={slippageSettings}
               onSettingsChange={updateSlippageSettings}
@@ -129,7 +129,7 @@ export default function SwapPage() {
               variant="outline"
               size="icon"
               onClick={handleSwapTokens}
-              className="rounded-full"
+              className="rounded-full neon-border hover:neon-glow-cyan transition-smooth"
             >
               <ArrowDown className="w-4 h-4" />
             </Button>
@@ -147,7 +147,7 @@ export default function SwapPage() {
           />
 
           {quote && (
-            <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
+            <div className="space-y-3 p-4 bg-muted/50 rounded-lg neon-border">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Rate</span>
                 <span className="font-medium">
@@ -200,14 +200,14 @@ export default function SwapPage() {
           )}
 
           {!isWalletConnected ? (
-            <Button onClick={connectWallet} className="w-full" size="lg">
+            <Button onClick={connectWallet} className="w-full neon-glow-cyan hover:neon-glow-purple transition-smooth" size="lg">
               Connect Wallet
             </Button>
           ) : (
             <Button
               onClick={handleSwap}
               disabled={!quote || isSwapping}
-              className="w-full"
+              className="w-full neon-glow-cyan hover:neon-glow-purple transition-smooth"
               size="lg"
             >
               {isSwapping ? 'Swapping...' : 'Swap'}

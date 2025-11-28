@@ -1,8 +1,10 @@
 import HomePage from './pages/HomePage';
 import SwapPage from './pages/SwapPage';
 import PoolsPage from './pages/PoolsPage';
+import PoolDetailPage from './pages/PoolDetailPage';
 import LiquidityPage from './pages/LiquidityPage';
 import PositionsPage from './pages/PositionsPage';
+import PositionDetailPage from './pages/PositionDetailPage';
 import type { ReactNode } from 'react';
 
 interface RouteConfig {
@@ -29,6 +31,12 @@ const routes: RouteConfig[] = [
     element: <PoolsPage />,
   },
   {
+    name: 'Pool Detail',
+    path: '/pools/:id',
+    element: <PoolDetailPage />,
+    visible: false,
+  },
+  {
     name: 'Liquidity',
     path: '/liquidity',
     element: <LiquidityPage />,
@@ -37,6 +45,12 @@ const routes: RouteConfig[] = [
     name: 'Positions',
     path: '/positions',
     element: <PositionsPage />,
+  },
+  {
+    name: 'Position Detail',
+    path: '/positions/:id',
+    element: <PositionDetailPage />,
+    visible: false,
   },
 ];
 

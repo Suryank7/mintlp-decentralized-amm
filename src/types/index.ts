@@ -36,6 +36,7 @@ export interface Pool {
   feeTier: FeeTier;
   poolType: PoolType;
   volume24h: string;
+  volume7d: string;
   fees24h: string;
   tvl: string;
   apr: number;
