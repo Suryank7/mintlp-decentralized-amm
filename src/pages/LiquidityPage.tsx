@@ -12,9 +12,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Plus, Minus, Info } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 export default function LiquidityPage() {
   const { tokens, isWalletConnected, connectWallet, refreshData } = useAMM();
+  const { signAndSubmitTransaction } = useWallet();
   const { toast } = useToast();
 
   const [activeTab, setActiveTab] = useState<'add' | 'remove'>('add');
@@ -49,49 +51,51 @@ export default function LiquidityPage() {
 
     setIsProcessing(true);
 
-    setTimeout(() => {
-      try {
-        let pool = selectedPool;
+    try {
+      let pool = selectedPool;
 
-        if (!pool) {
-          pool = PoolService.createPool(
-            tokenA,
-            tokenB,
-            AMMath.parseAmount(amountA, tokenA.decimals),
-            AMMath.parseAmount(amountB, tokenB.decimals),
-            feeTier
-          );
-
-          toast({
-            title: 'Pool Created',
-            description: `Created new ${tokenA.symbol}/${tokenB.symbol} pool`,
-          });
-        }
-
-        const { position, lpTokens } = LiquidityService.addLiquidity(
-          pool,
-          AMMath.parseAmount(amountA, tokenA.decimals),
-          AMMath.parseAmount(amountB, tokenB.decimals)
-        );
-
-        toast({
-          title: 'Liquidity Added',
-          description: `Added liquidity and received NFT position #${position.nftId.slice(-6)}`,
-        });
-
-        setAmountA('');
-        setAmountB('');
-        refreshData();
-      } catch (error) {
-        toast({
-          title: 'Failed to Add Liquidity',
-          description: error instanceof Error ? error.message : 'Transaction failed',
-          variant: 'destructive',
-        });
+      // Note: If pool is missing, we need a separate transaction to Create Pool.
+      // For this step, we will assume pool exists or we only support Adding to existing.
+      // Or we need a different payload for "Initialize Pool"
+      
+      if (!pool) {
+         // Create pool logic would go here. For now, defaulting to failure if no pool.
+         // Or we can mock the pool creation locally just to proceed to AddLiquidity if valid.
+         // But in real world, Create Pool is a tx.
+         throw new Error("Pool does not exist. Create pool implementation needed.");
       }
 
+      const amountAMin = "0"; // Slippage logic needed
+      const amountBMin = "0";
+
+      const payload = LiquidityService.getAddLiquidityTransactionPayload(
+         pool,
+         AMMath.parseAmount(amountA, tokenA.decimals),
+         AMMath.parseAmount(amountB, tokenB.decimals),
+         amountAMin,
+         amountBMin
+      );
+
+      const response = await signAndSubmitTransaction(payload);
+
+      toast({
+        title: 'Liquidity Added',
+        description: `Tx Hash: ${response.hash.slice(0, 6)}...${response.hash.slice(-4)}`,
+      });
+
+      setAmountA('');
+      setAmountB('');
+      refreshData();
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        title: 'Failed to Add Liquidity',
+        description: error.message || 'Transaction failed',
+        variant: 'destructive',
+      });
+    } finally {
       setIsProcessing(false);
-    }, 2000);
+    }
   };
 
   const availableTokensB = tokens.filter(t => t.id !== tokenA?.id);
@@ -169,7 +173,7 @@ export default function LiquidityPage() {
                 <Alert>
                   <Info className="h-4 w-4" />
                   <AlertDescription>
-                    This pool doesn't exist yet. You'll create a new pool with your initial liquidity.
+                    This pool doesn't exist yet. Functionality to create new pool is coming soon.
                   </AlertDescription>
                 </Alert>
               )}
@@ -199,7 +203,7 @@ export default function LiquidityPage() {
               ) : (
                 <Button
                   onClick={handleAddLiquidity}
-                  disabled={!tokenA || !tokenB || !amountA || !amountB || isProcessing}
+                  disabled={!tokenA || !tokenB || !amountA || !amountB || isProcessing || !selectedPool}
                   className="w-full"
                   size="lg"
                 >

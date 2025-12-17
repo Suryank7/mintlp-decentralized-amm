@@ -5,6 +5,7 @@ import PoolDetailPage from './pages/PoolDetailPage';
 import LiquidityPage from './pages/LiquidityPage';
 import PositionsPage from './pages/PositionsPage';
 import PositionDetailPage from './pages/PositionDetailPage';
+import FaucetPage from './pages/FaucetPage';
 import type { ReactNode } from 'react';
 
 interface RouteConfig {
@@ -51,6 +52,12 @@ const routes: RouteConfig[] = [
     path: '/positions/:id',
     element: <PositionDetailPage />,
     visible: false,
+  },
+  {
+    name: 'Faucet',
+    path: '/faucet',
+    element: <FaucetPage />,
+    visible: false, // Hidden from main nav, accessed via header button
   },
 ];
 

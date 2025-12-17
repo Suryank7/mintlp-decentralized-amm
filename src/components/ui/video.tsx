@@ -19,7 +19,9 @@ import {
     DurationDisplay,
     FullscreenToggle,
     VolumeMenuButton,
-    ProgressControl
+    VolumeMenuButton,
+    ProgressControl,
+    Player
 } from 'video-react';
 import 'video-react/dist/video-react.css';
 

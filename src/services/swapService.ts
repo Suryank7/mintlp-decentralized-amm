@@ -1,8 +1,33 @@
 import { Token, Pool, SwapQuote, SlippageSettings } from '@/types';
 import { AMMath } from './ammMath';
 import { PoolService } from './poolService';
+import { MODULE_ADDRESS } from '@/constants/aptos';
+import { InputTransactionData } from "@aptos-labs/wallet-adapter-react";
 
 export class SwapService {
+  static getSwapTransactionPayload(
+    quote: SwapQuote,
+    _slippageSettings: SlippageSettings
+  ): InputTransactionData {
+    const pool = quote.route[0];
+    const isTokenAInput = pool.tokenA.id === quote.inputToken.id;
+    
+    // In a real app, IDs would be full struct tags like "0x1::aptos_coin::AptosCoin"
+    // For now we assume the ID property holds this or needs mapping
+    
+    return {
+      data: {
+        function: `${MODULE_ADDRESS}::liquidity_pool::swap`,
+        typeArguments: [pool.tokenA.id, pool.tokenB.id], 
+        functionArguments: [
+          quote.inputAmount,
+          quote.minimumReceived,
+          isTokenAInput
+        ]
+      }
+    };
+  }
+
   static getSwapQuote(
     inputToken: Token,
     outputToken: Token,
@@ -69,7 +94,7 @@ export class SwapService {
 
   static executeSwap(
     quote: SwapQuote,
-    slippageSettings: SlippageSettings
+    _slippageSettings: SlippageSettings
   ): { success: boolean; hash?: string; error?: string } {
     try {
       const pool = quote.route[0];
@@ -113,7 +138,7 @@ export class SwapService {
   static findBestRoute(
     inputToken: Token,
     outputToken: Token,
-    inputAmount: string
+    _inputAmount: string
   ): Pool[] {
     const directPool = PoolService.findPool(inputToken, outputToken);
     

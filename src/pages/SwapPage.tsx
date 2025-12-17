@@ -10,9 +10,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ArrowDown, AlertTriangle, Info } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 export default function SwapPage() {
   const { tokens, slippageSettings, updateSlippageSettings, isWalletConnected, connectWallet, addTransaction } = useAMM();
+  const { signAndSubmitTransaction } = useWallet();
   const { toast } = useToast();
 
   const [inputToken, setInputToken] = useState<Token | undefined>(tokens[0]);
@@ -60,39 +62,40 @@ export default function SwapPage() {
 
     addTransaction(transaction);
 
-    setTimeout(() => {
-      const result = SwapService.executeSwap(quote, slippageSettings);
+    try {
+      const payload = SwapService.getSwapTransactionPayload(quote, slippageSettings);
+      
+      const response = await signAndSubmitTransaction(payload);
+      
+      toast({
+        title: 'Swap Submitted',
+        description: `Tx Hash: ${response.hash.slice(0, 6)}...${response.hash.slice(-4)}`,
+      });
 
-      if (result.success) {
-        toast({
-          title: 'Swap Successful',
-          description: `Swapped ${inputAmount} ${inputToken?.symbol} for ${AMMath.formatAmount(quote.outputAmount, outputToken!.decimals)} ${outputToken?.symbol}`,
-        });
+      addTransaction({
+        ...transaction,
+        status: 'success',
+        hash: response.hash,
+      });
 
-        addTransaction({
-          ...transaction,
-          status: 'success',
-          hash: result.hash,
-        });
+      setInputAmount('');
+      setQuote(null);
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        title: 'Swap Failed',
+        description: error.message || 'Transaction failed',
+        variant: 'destructive',
+      });
 
-        setInputAmount('');
-        setQuote(null);
-      } else {
-        toast({
-          title: 'Swap Failed',
-          description: result.error || 'Transaction failed',
-          variant: 'destructive',
-        });
-
-        addTransaction({
-          ...transaction,
-          status: 'failed',
-          error: result.error,
-        });
-      }
-
+      addTransaction({
+        ...transaction,
+        status: 'failed',
+        error: error.message,
+      });
+    } finally {
       setIsSwapping(false);
-    }, 2000);
+    }
   };
 
   const priceImpactWarning = quote

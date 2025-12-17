@@ -8,7 +8,7 @@ import path from "path";
 export default defineConfig({
   plugins: [
     react(),
-    miaodaDevPlugin(),
+    miaodaDevPlugin() as any,
     svgr({
       svgrOptions: {
         icon: true,
@@ -22,4 +22,25 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    exclude: ["@aptos-labs/wallet-adapter-react", "petra-plugin-wallet-adapter"],
+    esbuildOptions: {
+      target: "esnext",
+    },
+    include: ["poseidon-lite", "eventemitter3", "@aptos-labs/ts-sdk", "ed2curve", "tweetnacl"]
+  },
+  build: {
+    target: "esnext",
+    commonjsOptions: {
+      include: [/node_modules/],
+      transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom']
+        }
+      }
+    }
+  }
 });

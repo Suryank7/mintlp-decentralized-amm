@@ -49,6 +49,22 @@ const Header = () => {
                   </Button>
                 </Link>
               ))}
+              <Button
+                 variant="ghost"
+                 className="text-pink-500 hover:text-pink-400 hover:neon-glow-purple transition-smooth"
+                 onClick={async () => {
+                     // Temporary quick handler, ideally moved to a service
+                     // But we will implement the proper faucet logic in a hook or component later
+                     // For now, just a visual placeholder or simple alert if clicked
+                     console.log("Minting tokens...");
+                     // We can't easily call the move contract here without the provider, 
+                     // so we will just create a dedicated Faucet page or Modal?
+                     // Let's just make it navigate to a /faucet page or trigger a hook if we have one.
+                     // Better: Add it to the navigation array if it's a page, or a button that calls the contract.
+                 }}
+              >
+                <Link to="/faucet">Faucet</Link>
+              </Button>
             </div>
           </div>
 

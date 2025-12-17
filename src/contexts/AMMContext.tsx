@@ -3,6 +3,7 @@ import { Token, Pool, LPPosition, SlippageSettings, Transaction, UserPortfolio }
 import { MOCK_TOKENS } from '@/services/mockData';
 import { PoolService } from '@/services/poolService';
 import { LiquidityService } from '@/services/liquidityService';
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 interface AMMContextType {
   tokens: Token[];
@@ -22,11 +23,11 @@ interface AMMContextType {
 const AMMContext = createContext<AMMContextType | undefined>(undefined);
 
 export function AMMProvider({ children }: { children: ReactNode }) {
+  const { connected, connect, disconnect, wallets } = useWallet();
   const [tokens] = useState<Token[]>(MOCK_TOKENS);
   const [pools, setPools] = useState<Pool[]>([]);
   const [positions, setPositions] = useState<LPPosition[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [slippageSettings, setSlippageSettings] = useState<SlippageSettings>({
     tolerance: 0.005,
     deadline: 20,
@@ -45,15 +46,29 @@ export function AMMProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (isWalletConnected) {
+    if (connected) {
+      setPositions(LiquidityService.getAllPositions()); // In real app, fetch from chain
+      updatePortfolio();
+    } else {
+      setPositions([]);
+      setPortfolio({
+        totalValueUSD: 0,
+        positions: [],
+        totalFeesEarnedUSD: 0,
+        totalImpermanentLoss: 0,
+      });
+    }
+  }, [connected]);
+
+  useEffect(() => {
+    if (connected) {
       updatePortfolio();
     }
-  }, [positions, isWalletConnected]);
+  }, [positions, connected]);
 
   const refreshData = () => {
     setPools(PoolService.getAllPools());
-    
-    if (isWalletConnected) {
+    if (connected) {
       setPositions(LiquidityService.getAllPositions());
     }
   };
@@ -72,13 +87,18 @@ export function AMMProvider({ children }: { children: ReactNode }) {
   };
 
   const connectWallet = () => {
-    setIsWalletConnected(true);
-    setPositions(LiquidityService.getAllPositions());
+    // Basic auto-connect to Petra or first available for this demo
+    // In production, you'd show a modal to select wallet
+    const petra = wallets.find(w => w.name === "Petra");
+    if (petra) {
+      connect(petra.name);
+    } else if (wallets.length > 0) {
+      connect(wallets[0].name);
+    }
   };
 
   const disconnectWallet = () => {
-    setIsWalletConnected(false);
-    setPositions([]);
+    disconnect();
     setTransactions([]);
   };
 
@@ -99,7 +119,7 @@ export function AMMProvider({ children }: { children: ReactNode }) {
         transactions,
         slippageSettings,
         portfolio,
-        isWalletConnected,
+        isWalletConnected: connected,
         connectWallet,
         disconnectWallet,
         updateSlippageSettings,
