@@ -142,5 +142,7 @@ sequenceDiagram
     - [ ] Secondary Market for LP NFTs
 
 ---
+## 🔴 Live Demo
+👉 https://mint-lp.vercel.app/
 
 *Verified by `src/verify_logic.ts` logic proof script.*
