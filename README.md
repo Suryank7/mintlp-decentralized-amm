@@ -1,96 +1,146 @@
-# Welcome to Your Miaoda Project
-Miaoda Application Link URL
-    URL:https://medo.dev/projects/app-7vakp1i63p4x
+# 🦄 MintLP: The Future of NFT-Based Liquidity
 
-# Welcome to Your Miaoda Project
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Aptos](https://img.shields.io/badge/Blockchain-Aptos-black)
+![Move](https://img.shields.io/badge/Smart%20Contracts-Move-purple)
+![React](https://img.shields.io/badge/Frontend-React%2018-cyan)
 
-## Project Info
+**MintLP** is a decentralized ACMM (Automated Concentrated Market Maker) built on **Aptos** that redefines liquidity provision by tokenizing LP positions as **Data-Rich NFTs**.
 
-## Project Directory
+> 🏆 **Built for Cosmohack Hackathon**
 
-```
-├── README.md # Documentation
-├── components.json # Component library configuration
-├── eslint.config.js # ESLint configuration
-├── index.html # Entry file
-├── package.json # Package management
-├── postcss.config.js # PostCSS configuration
-├── public # Static resources directory
-│   ├── favicon.png # Icon
-│   └── images # Image resources
-├── src # Source code directory
-│   ├── App.tsx # Entry file
-│   ├── components # Components directory
-│   ├── context # Context directory
-│   ├── db # Database configuration directory
-│   ├── hooks # Common hooks directory
-│   ├── index.css # Global styles
-│   ├── layout # Layout directory
-│   ├── lib # Utility library directory
-│   ├── main.tsx # Entry file
-│   ├── routes.tsx # Routing configuration
-│   ├── pages # Pages directory
-│   ├── services # Database interaction directory
-│   ├── types # Type definitions directory
-├── tsconfig.app.json # TypeScript frontend configuration file
-├── tsconfig.json # TypeScript configuration file
-├── tsconfig.node.json # TypeScript Node.js configuration file
-└── vite.config.ts # Vite configuration file
-```
+---
 
-## Tech Stack
+## 💥 The Problem vs. Solution
 
-Vite, TypeScript, React, Supabase
+Traditional AMMs treat liquidity providers as fungible numbers. We treat them as unique investors.
 
-## Development Guidelines
+| Feature | ❌ Traditional AMMs | ✅ MintLP (Our Solution) |
+| :--- | :--- | :--- |
+| **Liquidity Representation** | Fungible ERC-20 Tokens | **Non-Fungible Tokens (NFTs)** |
+| **Capital Efficiency** | Low (Lazy Liquidity) | **High (Concentrated/Range)** |
+| **Data Visibility** | Hidden in rigid contracts | **Visual Metadata (Fees, PnL)** |
+| **Transferability** | Complex (Token Transfers) | **Simple (Trade NFT on Marketplace)** |
 
-### How to edit code locally?
+---
 
-You can choose [VSCode](https://code.visualstudio.com/Download) or any IDE you prefer. The only requirement is to have Node.js and npm installed.
+## 💎 Key Innovation: NFT Positions
 
-### Environment Requirements
+Every time you add liquidity, you mint a unique **NFT Position**.
+This NFT contains all your position data:
+*   💰 **Principal Value**
+*   📈 **Accumulated Fees**
+*   📉 **Impermanent Loss Stats**
+*   ⏳ **Age & Maturity**
 
-```
-# Node.js ≥ 20
-# npm ≥ 10
-Example:
-# node -v   # v20.18.3
-# npm -v    # 10.8.2
+```mermaid
+graph LR
+    User[User] -- Adds Liquidity --> SmartContract[MintLP Contract]
+    SmartContract -- Mints --> NFT[LP Position NFT]
+    NFT -- Contains --> Metadata[Metadata: Value, Fees, Range]
+    User -- Owns --> NFT
 ```
 
-### Installing Node.js on Windows
+---
 
+## 🏗 System Architecture
+
+We utilize a **Hybrid Architecture** for the Hackathon Demo to ensure instant feedback and zero-cost testing for judges.
+
+```mermaid
+dropdown
+sequenceDiagram
+    participant User
+    participant Frontend as React App
+    participant Wallet as Aptos Wallet (Petra)
+    participant MockEngine as Simulation Engine
+    participant Blockchain as Aptos Network
+
+    User->>Frontend: Connect Wallet
+    alt Real Wallet Found
+        Frontend->>Wallet: Request Connection
+        Wallet-->>Frontend: Signed Address
+    else No Wallet (Demo Mode)
+        Frontend->>MockEngine: Auto-Login Demo User
+        MockEngine-->>Frontend: Mock Session
+    end
+
+    User->>Frontend: Add Liquidity
+    alt Smart Contract Mode
+        Frontend->>Wallet: Sign Transaction
+        Wallet->>Blockchain: Execute Move Module
+    else Mock Mode (Fallback)
+        Frontend->>MockEngine: Calculate Curve Math
+        MockEngine->>MockEngine: Generate NFT Metadata
+        MockEngine-->>Frontend: Return Success Hash
+    end
 ```
-# Step 1: Visit the Node.js official website: https://nodejs.org/, click download. The website will automatically suggest a suitable version (32-bit or 64-bit) for your system.
-# Step 2: Run the installer: Double-click the downloaded installer to run it.
-# Step 3: Complete the installation: Follow the installation wizard to complete the process.
-# Step 4: Verify installation: Open Command Prompt (cmd) or your IDE terminal, and type `node -v` and `npm -v` to check if Node.js and npm are installed correctly.
-```
 
-### Installing Node.js on macOS
+---
 
-```
-# Step 1: Using Homebrew (Recommended method): Open Terminal. Type the command `brew install node` and press Enter. If Homebrew is not installed, you need to install it first by running the following command in Terminal:
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-Alternatively, use the official installer: Visit the Node.js official website. Download the macOS .pkg installer. Open the downloaded .pkg file and follow the prompts to complete the installation.
-# Step 2: Verify installation: Open Command Prompt (cmd) or your IDE terminal, and type `node -v` and `npm -v` to check if Node.js and npm are installed correctly.
-```
+## 🚀 Features
 
-### After installation, follow these steps:
+*   **Dual-Engine Swap**:
+    *   🔵 **Constant Product (x*y=k)** for volatile pairs.
+    *   🔴 **StableSwap (x+y=k)** for stable pairs (USDC/USDT).
+*   **Smart Routing**: Automatically finds the best pool for your trade.
+*   **Visual Portfolio**: View your LP NFTs in a gallery view.
+*   **Mock Wallet**: Built-in wallet simulation for users without extensions.
 
-```
-# Step 1: Download the code package
-# Step 2: Extract the code package
-# Step 3: Open the code package with your IDE and navigate into the code directory
-# Step 4: In the IDE terminal, run the command to install dependencies: npm i
-# Step 5: In the IDE terminal, run the command to start the development server: npm run dev -- --host 127.0.0.1
-# Step 6: if step 5 failed, try this command to start the development server: npx vite --host 127.0.0.1
-```
+---
 
-### How to develop backend services?
+## 🛠 Tech Stack
 
-Configure environment variables and install relevant dependencies.If you need to use a database, please use the official version of Supabase.
+*   **Frontend**: React 18, Vite, Tailwind CSS, Shadcn/ui
+*   **Blockchain**: Aptos (Move Language)
+*   **Integration**: Aptos Wallet Adapter
+*   **Design**: Glassmorphism (CSS3 Backdrop Filter)
 
-## Learn More
+---
 
-You can also check the help documentation: Download and Building the app（ [https://intl.cloud.baidu.com/en/doc/MIAODA/s/download-and-building-the-app-en](https://intl.cloud.baidu.com/en/doc/MIAODA/s/download-and-building-the-app-en)）to learn more detailed content.
+## 🏁 Getting Started
+
+### Prerequisites
+*   Node.js v16+
+*   npm or yarn
+
+### Installation
+
+1.  **Clone the Repo**
+    ```bash
+    git clone https://github.com/your-username/mintlp.git
+    cd mintlp
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Run Development Server**
+    ```bash
+    npm run dev
+    ```
+
+4.  **Open in Browser**
+    Visit `http://localhost:5173`.
+    *   If you don't have a wallet, click "Connect" and it will auto-enable **Demo Mode**.
+
+---
+
+## 🗺 Roadmap
+
+- [x] **Phase 1: Concept & Simulation** (Current)
+    - [x] Core AMM Logic (Swap/Liquidity)
+    - [x] NFT Metadata Generation
+    - [x] Frontend Simulation
+- [ ] **Phase 2: Testnet Deployment**
+    - [ ] Deploy Move Modules to Aptos Testnet
+    - [ ] Indexer Integration
+- [ ] **Phase 3: Mainnet & Marketplace**
+    - [ ] Audit & Launch
+    - [ ] Secondary Market for LP NFTs
+
+---
+
+*Verified by `src/verify_logic.ts` logic proof script.*

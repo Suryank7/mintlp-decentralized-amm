@@ -7,6 +7,7 @@
     - [ ] Connect to `AMMContext`'s `connectWallet`
 - [ ] Integrate Modal into `App.tsx` or Main Layout
 - [ ] Update Documentation
-    - [ ] `USER_GUIDE.md`
-    - [ ] `README_JUDGES.md`
+    - [x] `USER_GUIDE.md`
+    - [x] `README_JUDGES.md`
+    - [x] Revamp `README.md` (Hackathon Standard)
 - [ ] Verify functionality (Manual Check logic)
