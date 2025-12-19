@@ -1,4 +1,0 @@
-Title: Decentralized AMM with NFT-based LP Positions
-
-Problem Statement/Overview:
-This is a comprehensive web application demonstrating a Decentralized Automated Market Maker (AMM) with NFT-based liquidity provider positions. The application showcases all the core functionality of a modern DeFi AMM protocol, including token swaps, liquidity provision, fee distribution, and NFT-based position management. It solves the problem of enabling decentralized token trading and liquidity provision without a central authority, using NFTs to represent unique liquidity positions.

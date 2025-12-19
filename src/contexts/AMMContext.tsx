@@ -41,12 +41,14 @@ export function AMMProvider({ children }: { children: ReactNode }) {
     totalImpermanentLoss: 0,
   });
 
+  const [isMockConnected, setIsMockConnected] = useState(false);
+
   useEffect(() => {
     refreshData();
   }, []);
 
   useEffect(() => {
-    if (connected) {
+    if (connected || isMockConnected) {
       setPositions(LiquidityService.getAllPositions()); // In real app, fetch from chain
       updatePortfolio();
     } else {
@@ -58,17 +60,17 @@ export function AMMProvider({ children }: { children: ReactNode }) {
         totalImpermanentLoss: 0,
       });
     }
-  }, [connected]);
+  }, [connected, isMockConnected]);
 
   useEffect(() => {
-    if (connected) {
+    if (connected || isMockConnected) {
       updatePortfolio();
     }
-  }, [positions, connected]);
+  }, [positions, connected, isMockConnected]);
 
   const refreshData = () => {
     setPools(PoolService.getAllPools());
-    if (connected) {
+    if (connected || isMockConnected) {
       setPositions(LiquidityService.getAllPositions());
     }
   };
@@ -87,18 +89,28 @@ export function AMMProvider({ children }: { children: ReactNode }) {
   };
 
   const connectWallet = () => {
-    // Basic auto-connect to Petra or first available for this demo
-    // In production, you'd show a modal to select wallet
+    // Try to connect to real wallet first
     const petra = wallets.find(w => w.name === "Petra");
     if (petra) {
       connect(petra.name);
-    } else if (wallets.length > 0) {
+      return;
+    } 
+    
+    if (wallets.length > 0) {
       connect(wallets[0].name);
+      return;
     }
+
+    // Fallback to mock for Demo/Product showcase if no extension found
+    console.log("No physical wallet found, enabling Product Demo Mode (Mock Wallet)");
+    setIsMockConnected(true);
+    // In a real implementation this would trigger a toast, but we don't have access to toast here unless imported
+    // Assuming UI handles the state change visibly
   };
 
   const disconnectWallet = () => {
-    disconnect();
+    if (connected) disconnect();
+    setIsMockConnected(false);
     setTransactions([]);
   };
 
@@ -119,7 +131,7 @@ export function AMMProvider({ children }: { children: ReactNode }) {
         transactions,
         slippageSettings,
         portfolio,
-        isWalletConnected: connected,
+        isWalletConnected: connected || isMockConnected,
         connectWallet,
         disconnectWallet,
         updateSlippageSettings,
